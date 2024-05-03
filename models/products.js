@@ -48,6 +48,13 @@ const products = [
     location: "Lawrence",
     active: false,
   },
+  {
+    name: "paper",
+    price: 500,
+    quantity: 3,
+    location: "Methuen",
+    active: true,
+  },
 ];
 
 module.exports = products;
