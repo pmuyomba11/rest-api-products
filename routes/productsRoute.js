@@ -1,76 +1,21 @@
 const router = require("express").Router();
 const crypto = require("crypto");
 const products = require("../models/products");
+const productsController = require("../controllers/productsController");
 
-router.post("/", (req, res) => {
-  const { name, price, quantity, location, active } = req.body;
-
-  if (!name) {
-    return res.status(422).json({ message: "Name input is required." });
-  }
-  const id = crypto.randomUUID();
-
-  products.push({
-    id,
-    name,
-    price,
-    quantity,
-    location,
-    active,
-  });
-  res.status(201).json({ message: "Product created successfully.." });
-});
+//Create route
+router.post("/", productsController.createNewProduct);
 
 //Index route...
-router.get("/", (req, res) => {
-  res.status(200).send(products);
-});
+router.get("/", productsController.getAllProducts);
 
 //Show route..
-router.get("/:id", (req, res) => {
-  const product = products.find((product) => product.id == req.params.id);
-
-  if (!product) {
-    return res.status(204).json({ message: "No content" });
-  }
-  res.status(200).json(product);
-});
+router.get("/:id", productsController.getProductById);
 
 //Update route...
-router.put("/:id", (req, res) => {
-  const product = products.find((product) => product.id == req.params.id);
-  if (!product) {
-    return res.status(204).json();
-  }
-  const { name, price, quantity, location, active } = req.body;
-  if (name) {
-    product.name = name;
-  }
-  if (price) {
-    product.price = price;
-  }
-  if (quantity) {
-    product.quantity = quantity;
-  }
-  if (location) {
-    product.location = location;
-  }
-  if ("active" in req.body) {
-    product.active = active;
-  }
-  res.status(200).json({ message: "Product updated successfully" });
-});
+router.put("/:id", productsController.updateProductById);
 
 //Delete route
-router.delete("/:id", (req, res) => {
-  const productIndex = products.findIndex(
-    (product) => product.id == req.params.id
-  );
-  if (productIndex == -1) {
-    res.status(404).json({ message: "No product found" });
-  }
-  products.splice(productIndex, 1);
-  res.status(200).json({ message: "Product successfully deleted.." });
-});
+router.delete("/:id", productsController.deleteProductById);
 
 module.exports = router;
