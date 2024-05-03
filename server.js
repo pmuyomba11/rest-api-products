@@ -16,5 +16,5 @@ app.use(morgan("dev")); //Developer loggers
 
 //Port listerner....
 app.listen(port, () => {
-  console.log(`Server is running on ${port}....`.inverse.blue);
+  console.log(`Server is running on ${port}....`.inverse.blue.bold);
 });
